@@ -1,0 +1,93 @@
+---
+title: "Résultats"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Canal très tolérant (limit=1000)
+
+## Sans ecn
+
+```{r}
+data = read.csv2('./data/medium_tolerant/sans_ecn/1.log')
+data$clock = data$clock - data$clock[1]
+fen = subset(data, data$type == "fenetre")
+plot(
+  main="Medium très tolérent (lim=1000), sans ecn",
+  xlab="Temps",
+  ylab="Taille de la fenêtre de congestion",
+  x = fen$clock, y= fen$fen,type='s') #Premier graphique d'exemple
+
+
+# Nombre d'événement timeout
+data0 = read.csv2('./data/medium_tolerant/sans_ecn/0.log')
+data1 = read.csv2('./data/medium_tolerant/sans_ecn/1.log')
+data2 = read.csv2('./data/medium_tolerant/sans_ecn/2.log')
+data3 = read.csv2('./data/medium_tolerant/sans_ecn/3.log')
+data4 = read.csv2('./data/medium_tolerant/sans_ecn/4.log')
+fen0 = subset(data0, data0$type == "timeout")
+fen1 = subset(data1, data1$type == "timeout")
+fen2 = subset(data2, data2$type == "timeout")
+fen3 = subset(data3, data3$type == "timeout")
+fen4 = subset(data4, data4$type == "timeout")
+nbTimeout = (nrow(fen0) + nrow(fen1) + nrow(fen2) + nrow(fen3) + nrow(fen4) )/5
+
+data0$temps = data0$temps - data0$temps[1]
+debit0 = (max(data0$temps)/52000)
+data1$temps = data1$temps - data1$temps[1]
+debit1 = max(data1$temps)/52000
+data2$temps = data2$temps - data2$temps[1]
+debit2 = max(data2$temps)/52000
+data3$temps = data3$temps - data3$temps[1]
+debit3 = max(data3$temps)/52000
+data4$temps = data4$temps - data4$temps[1]
+debit4 = max(data4$temps)/52000
+debit = (((debit0 + debit1 + debit2 + debit3 + debit4)/5)*1000000)/1000 # En ko/s
+
+```
+## Avec ecn
+
+```{r}
+data = read.csv2('./data/medium_tolerant/ecn/1.log')
+data$clock = data$clock - data$clock[1]
+fen = subset(data, data$type == "fenetre")
+plot(
+  main="Medium très tolérent (lim=1000), avec ecn",
+  xlab="Temps",
+  ylab="Taille de la fenêtre de congestion",
+  x = fen$clock, y= fen$fen,type='s') #Premier graphique d'exemple
+
+data0 = read.csv2('./data/medium_tolerant/ecn/0.log')
+data1 = read.csv2('./data/medium_tolerant/ecn/1.log')
+data2 = read.csv2('./data/medium_tolerant/ecn/2.log')
+data3 = read.csv2('./data/medium_tolerant/ecn/3.log')
+data4 = read.csv2('./data/medium_tolerant/ecn/4.log')
+fen0 = subset(data0, data0$type == "timeout")
+fen1 = subset(data1, data1$type == "timeout")
+fen2 = subset(data2, data2$type == "timeout")
+fen3 = subset(data3, data3$type == "timeout")
+fen4 = subset(data4, data4$type == "timeout")
+nbTimeout = (nrow(fen0) + nrow(fen1) + nrow(fen2) + nrow(fen3) + nrow(fen4) )/5
+
+ecn0 = subset(data0, data0$type == "ecn")
+ecn1 = subset(data1, data1$type == "ecn")
+ecn2 = subset(data2, data2$type == "ecn")
+ecn3 = subset(data3, data3$type == "ecn")
+ecn4 = subset(data4, data4$type == "ecn")
+nbEcn = (nrow(ecn0) + nrow(ecn1) + nrow(ecn2) + nrow(ecn3) + nrow(ecn4) )/5
+
+data0$temps = data0$temps - data0$temps[1]
+debit0 = (max(data0$temps)/52000)
+data1$temps = data1$temps - data1$temps[1]
+debit1 = max(data1$temps)/52000
+data2$temps = data2$temps - data2$temps[1]
+debit2 = max(data2$temps)/52000
+data3$temps = data3$temps - data3$temps[1]
+debit3 = max(data3$temps)/52000
+data4$temps = data4$temps - data4$temps[1]
+debit4 = max(data4$temps)/52000
+debit = (((debit0 + debit1 + debit2 + debit3 + debit4)/5)*1000000)/10000 # En ko/s
+```

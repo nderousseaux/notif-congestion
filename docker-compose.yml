@@ -1,0 +1,9 @@
+version: "3"
+services:
+  gcc:
+    container_name: r_tp_note
+    build: .
+    tty: true
+    stdin_open: true
+    volumes:
+      - ".:/code"
